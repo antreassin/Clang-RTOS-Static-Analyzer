@@ -1,0 +1,9 @@
+/Volumes/VivadoSSD/llvm-project/rtos/build/CMakeFiles/intrinsics_gen.dir
+/Volumes/VivadoSSD/llvm-project/rtos/build/CMakeFiles/vt_gen.dir
+/Volumes/VivadoSSD/llvm-project/rtos/build/CMakeFiles/omp_gen.dir
+/Volumes/VivadoSSD/llvm-project/rtos/build/CMakeFiles/acc_gen.dir
+/Volumes/VivadoSSD/llvm-project/rtos/build/CMakeFiles/target_parser_gen.dir
+/Volumes/VivadoSSD/llvm-project/rtos/build/CMakeFiles/clang-tablegen-targets.dir
+/Volumes/VivadoSSD/llvm-project/rtos/build/CMakeFiles/rtos.dir
+/Volumes/VivadoSSD/llvm-project/rtos/build/CMakeFiles/edit_cache.dir
+/Volumes/VivadoSSD/llvm-project/rtos/build/CMakeFiles/rebuild_cache.dir

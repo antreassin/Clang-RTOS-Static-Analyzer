@@ -1,0 +1,11 @@
+{
+  "malloc_functions": [
+    "malloc",
+    "calloc",
+    "realloc",
+    "free",
+    "sleep",
+    "vTaskDelay",
+    "xSemaphoreTake"
+  ]
+}

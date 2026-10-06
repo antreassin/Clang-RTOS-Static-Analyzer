@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/Volumes/VivadoSSD/llvm-project/rtos/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
