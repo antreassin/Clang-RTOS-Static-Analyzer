@@ -9,7 +9,7 @@
 #include <unordered_set>
 #include <vector>
 #include <string>
-#include <utility> // Required for std::pair
+#include <utility>
 
 using namespace clang;
 using namespace clang::ast_matchers;
@@ -27,8 +27,6 @@ DeclarationMatcher IsrCallMatcher =
 class IsrCheckerCallback : public MatchFinder::MatchCallback {
 private:
     std::vector<std::string> ForbiddenList;
-
-    // CHANGE 1: CallStack now holds a pair of <Name, Location>
     bool checkCallGraphDFS(const FunctionDecl *Func, ASTContext *Context, 
                            std::unordered_set<std::string>& Visited, 
                            std::vector<std::pair<std::string, SourceLocation>>& CallStack) {
@@ -39,12 +37,7 @@ private:
             return false;
         }
         Visited.insert(FuncName);
-
-        // --- STEP A: PUSH TO STACK ---
-        // CHANGE 2: Push both the name and the exact SourceLocation of the function
         CallStack.push_back({FuncName, Func->getLocation()});
-
-        // --- STEP B: CHECK FOR VIOLATION ---
         if (std::find(ForbiddenList.begin(), ForbiddenList.end(), FuncName) != ForbiddenList.end()) {
             return true;
         }
@@ -63,8 +56,6 @@ private:
                 }
             }
         }
-
-        // --- STEP C: POP FROM STACK ---
         CallStack.pop_back();
         return false;
     }
@@ -80,23 +71,17 @@ public:
 
         if (Call && Func) {
             std::unordered_set<std::string> Visited;
-            
-            // CHANGE 3: Update the vector declaration in run()
             std::vector<std::pair<std::string, SourceLocation>> CallStack; 
             
             if (checkCallGraphDFS(Func, Context, Visited, CallStack)) {
                 DiagnosticsEngine &Diag = Context->getDiagnostics();
                 
-                // 1. Print the Red Error and the Green Hint
                 unsigned ID = Diag.getCustomDiagID(DiagnosticsEngine::Error, 
                               "Violation: This ISR eventually calls a prohibited function.");
                 FixItHint Hint = FixItHint::CreateInsertion(Call->getBeginLoc(), "/* FIXME: PROHIBITED RTOS CALL */ ");
                 Diag.Report(Call->getBeginLoc(), ID) << Hint;
-
-                // 2. Loop through our preserved CallStack and print the trace as Gray Notes!
                 unsigned NoteID = Diag.getCustomDiagID(DiagnosticsEngine::Note, "Call graph trace -> '%0'");
                 
-                // CHANGE 4: Loop through the pairs and use step.second for the line location!
                 for (const auto& step : CallStack) {
                     Diag.Report(step.second, NoteID) << step.first;
                 }
