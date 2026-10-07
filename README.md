@@ -33,3 +33,5 @@ This project uses an "out-of-tree" build, meaning it links against your existing
    ```bash
    cmake -B build
    cmake --build build
+
+// ./build/rtos rtos_test.cpp -- -std=c++17 -isysroot $(xcrun --show-sdk-path) -resource-dir $(clang -print-resource-dir)
